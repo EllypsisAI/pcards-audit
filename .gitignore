@@ -1,6 +1,9 @@
-# Course-provided data — never push
+# Uncompressed databases stay local; the app ships data/pcards.db.gz
 *.db
-!data/osu_public.db
 .DS_Store
 __pycache__/
 .venv/
+
+# Secrets — never commit
+.env
+.streamlit/secrets.toml
