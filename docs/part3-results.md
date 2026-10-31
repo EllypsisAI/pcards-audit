@@ -36,8 +36,8 @@ far less than the noise already present. A clean Benford result is evidence that
 been wholesale fabricated. It is not evidence that no individual is defrauding the University, and
 the tests below find candidates that this one cannot see.
 
-**Follow-up:** re-run at cardholder level for the highest-volume cards, where a single person's
-amounts are numerous enough to test on their own.
+**Follow-up:** none at file level. A per-cardholder version was tried and rejected — fixed-price
+billing breaks Benford at card level (see *Test considered and rejected* below).
 
 ## Question 2 | Possible duplicate payments — 4,924 charges in 1,732 clusters
 
@@ -170,11 +170,13 @@ understates concentration and needs a normalised supplier name before it can be 
 **Follow-up:** run the flagged vendor names against the State's business registry and the employee
 address file. A vendor sharing an address with its only buyer is the finding this test exists for.
 
-## Question 7 | Credits from vendors the cardholder never paid — 115 credits, $57,511
+## Question 7 | Untraceable refunds — 115 credits, $57,511
 
-Fraud hypothesis: refunds should trace back to a purchase. Money arriving on a card from a vendor
-that card never paid can mean a refund for goods bought with other funds being routed onto a
-University card.
+Risk: Part III asks for tests of "fraud or processing errors", and this one is mainly the second.
+Part I requires each cardholder to check that returns are credited properly, which only works if
+every credit traces back to a purchase. A credit from a vendor the card never paid can be a
+reversal the University never recorded, a return whose purchase sits on another card, or — the
+fraud case — a refund for goods bought with other funds being routed onto a University card.
 
 **115 credits of $100 or more, worth $57,511**, come from vendors the cardholder made no 2014
 purchase from. Two things had to be fixed before that number meant anything.
@@ -192,7 +194,8 @@ successfully disputed transactions, which are the system working. Those 33 are w
 
 That leaves **82 credits worth $33,562** genuinely unexplained — and some of those are the
 per-order vendor strings described above, where a Staples credit carries a different order number
-from the purchase it reverses.
+from the purchase it reverses. A third source of false positives cannot be removed at all: the
+case restricts testing to 2014, so a January refund for a December 2013 purchase looks untraceable.
 
 **Conclusion: after removing chargeback adjustments and order-numbered vendor strings, the
 investigable population is small — a few dozen credits.** The value of the test is not the
@@ -226,6 +229,22 @@ that is wrong.
 **Follow-up:** for the top 10, list June purchases and check delivery dates against the invoice
 dates. Goods delivered in the new fiscal year against a June charge are a prepayment, which is a
 statutory violation and not merely poor budgeting.
+
+---
+
+## Test considered and rejected: Benford per cardholder
+
+Question 1's own conclusion is that a whole-file Benford test cannot see one person, so the obvious
+next step was to run it per cardholder, on every card with 300 or more charges of $1.00 or more
+(`sql/considered/benford_by_cardholder.sql`).
+
+It does not work on this data. **18 of the 36 cards fail** (mean absolute deviation above 0.015),
+and every card at the top fails because of a fixed price billed over and over: **$30.00 charged 170
+times** (an AT&T data plan), **$83.00 charged 131 times** (a hotel room rate), **$12.00 charged 188
+times**. Benford's law assumes amounts vary freely; a card that pays one fixed price hundreds of
+times breaks that assumption without anyone doing anything wrong. Per-card Benford therefore ranks
+billing arrangements, not fraud risk — the same lesson as the duplicate test in Question 2 — and it
+was not used.
 
 ---
 

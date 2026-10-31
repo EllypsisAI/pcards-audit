@@ -27,8 +27,9 @@ def run(path: Path, con: sqlite3.Connection, preview: int = 8) -> int:
     elapsed = time.perf_counter() - start
     cols = [d[0] for d in cur.description]
 
-    OUT_DIR.mkdir(exist_ok=True)
-    with (OUT_DIR / f"{path.stem}.csv").open("w", newline="") as fh:
+    out = OUT_DIR / path.relative_to(SQL_DIR).with_suffix(".csv")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with out.open("w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(cols)
         w.writerows(rows)
@@ -49,7 +50,9 @@ def main() -> None:
         sys.exit(f"database not found: {DB}")
     con = sqlite3.connect(f"file:{DB}?mode=ro", uri=True)
     wanted = sys.argv[1:]
+    # sql/considered/ holds the tests sized up and rejected; they run last
     files = sorted(SQL_DIR.glob("*.sql"), key=lambda p: (p.stem.startswith("qry"), len(p.stem), p.stem))
+    files += sorted((SQL_DIR / "considered").glob("*.sql"))
     if wanted:
         files = [f for f in files if f.stem in wanted]
     counts = {f.stem: run(f, con) for f in files}

@@ -1,11 +1,13 @@
--- Part III · Question 7 (student-defined) | Credits from vendors the cardholder never paid.
--- Fraud risk: Part I requires the cardholder to check that returns are credited properly.
--- The reverse is the fraud test — money arriving on a card from a vendor that card never
--- paid. Legitimate refunds trace back to a purchase; a credit with no purchase behind it
--- can mean a refund for goods bought with other funds being routed onto a University card,
--- a merchant reversing a transaction the University never recorded, or a returned item
--- whose original purchase sits on somebody else's card — the pattern Part I is guarding
--- against when it requires the credit to be reconciled to the cardholder's own statement.
+-- Part III · Question 7 (student-defined) | Untraceable refunds — credits from vendors the
+-- cardholder never paid.
+-- Risk: Part III covers "fraud or processing errors", and this is mainly the second.
+-- Part I requires the cardholder to check that returns are credited properly. That check
+-- only works if every credit traces back to a purchase; a credit with no purchase behind it
+-- can be a merchant reversing a transaction the University never recorded, a returned item
+-- whose original purchase sits on somebody else's card, or a refund for goods bought with
+-- other funds being routed onto a University card.
+-- Known limit: the case restricts testing to 2014, so a credit in early 2014 for a purchase
+-- made in late 2013 also appears here. Those are false positives the test cannot remove.
 --
 -- The first version of this test matched credits against charges of the same amount and
 -- returned 2,351 of the 3,791 credits — a population too large to be a finding, because

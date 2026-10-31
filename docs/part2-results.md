@@ -181,25 +181,33 @@ breaching the stated procedure, which contains no such exemption.
 resolved by identifying the department. Either it is a licensed teaching operation and the
 procedure needs a documented exemption, or it is a straightforward statutory violation.
 
-## Control 9 | Gifts, flowers, candy and decorations — 570 transactions, $164,872
+## Control 9 | Donations and sponsorships — 13 transactions, $6,366
 
-Part I prohibits gifts, gift cards and gift certificates as a violation of State statutes, and
-separately prohibits items with no business purpose, naming flowers and candy. **570 transactions
-worth $164,872** across **182 cardholders** hit gift, florist and confectionery MCCs.
+Part I prohibits donations and sponsorships outright, and the Part IV brief names them among the
+purchases an auditor must be able to find.
 
-This population needs splitting before it means anything. The two largest vendors — Party Galaxy
-(123 transactions) and Oklahoma Flower Market (84) — read as event and ceremony supplies for a
-university that runs graduations, athletics events and donor functions, and **nursery-stock
-suppliers such as Ball Seed Co and Bold Spring Nursery** are almost certainly grounds maintenance
-and horticulture teaching, not gifts. The MCC `FLORISTS SUPPLIES, NURSERY STOCK & FLOWERS` cannot
-distinguish a bereavement bouquet from a pallet of bedding plants.
+The obvious test — every charge at a charitable merchant — fails on inspection. The MCC
+`CHARITABLE AND SOCIAL SERVICE ORGANIZATIONS` carries **1,053 transactions worth $489,316** in
+2014, but its largest vendors are NFPA ($33,289 of fire-code standards), PLOS ($15,625 of journal
+publication fees) and conference bodies such as ACUI and AACRAO. Those are non-profits *selling*
+the University something it needs. A donation is defined by its recipient being a cause, so the
+test keeps non-profit merchants whose name identifies one, every payment to a religious or
+political organisation, and any line that describes itself as a donation.
 
-The genuinely suspicious subset is the gift and novelty stores: $4,045 at a key-and-novelty
-supplier and $3,969 at a NASA gift shop are the size and shape of bulk promotional or award items,
-which Part I also prohibits under Service and/or Incentive Awards.
+On that basis **13 transactions worth $6,366** across **12 cardholders** remain: a community food
+bank ($308), the American Red Cross ($190), March of Dimes ($113), the Arthritis Foundation ($934),
+two university foundations (NSU $1,000, GMU $575), and payments to religious organisations (Freedom
+Ranch twice for $1,918, AFA $500). Even these have innocent readings — the Red Cross sells
+first-aid training and a foundation can be a conference organiser — and the single "political
+organisation" charge is to a vendor named `MEDICAL EQUIPMENT`, which reads as a mis-coded merchant
+rather than a political contribution.
 
-**Follow-up:** exclude nursery and horticultural suppliers, then work the gift-and-novelty MCC by
-value. The Works description field will resolve most of them.
+**Conclusion:** donations are not a material leak. The finding worth reporting is the method one:
+a merchant-type test would have reported half a million dollars of "donations" that are almost all
+legitimate purchases.
+
+**Follow-up:** the four religious and political payments first ($2,668) — a political
+contribution on a State card is a statutory matter regardless of size — then the named charities.
 
 ## Control 10 | Gasoline — 129 cardholders with pump-sized charges
 
@@ -221,20 +229,30 @@ routine that bypasses the fuel-card control.
 **Follow-up:** the 16 repeat purchasers. Check each against the vehicle fleet — if they operate a
 University vehicle, a fuel card exists and is not being used.
 
-## Control 11 | Insurance — 16 transactions, $8,752
+## Control 11 | Purchases from OSU's own units — 272 transactions, $90,118
 
-Part I requires insurance to be processed on a requisition through Risk and Property Management.
-**16 transactions totalling $8,752** across **13 cardholders** went to insurance merchants. Vendors
-include VFIS-CETS (four charges), Francis L Dean & Associates, State Farm, and ACE American
-Insurance, alongside three charges to "TRAVEL INSURANCE POLICY" and two to "EVENT TICKET INSURANCE".
+Part I requires purchases from University departments and auxiliaries to go through the campus
+vendor invoice (CVI) system. A card charge to an OSU unit moves money from one University account
+to another through an external bank: it pays card fees on an internal transfer and leaves no
+internal billing record.
 
-Small in value, but the control being tested is not a spending limit — it is that Risk Management
-sees every policy the University buys. Travel and event-ticket insurance bought incidentally at the
-point of booking is the most likely explanation for the smaller charges, and is exactly the kind of
-cover that escapes the risk register.
+**272 charges worth $90,118** across **113 cardholders** went to vendors named as OSU units. They
+fall into three groups that carry very different weight:
 
-**Follow-up:** send the list to Risk and Property Management and ask which of the 16 they knew
-about. Anything they do not recognise is uninsured-risk exposure, not just a procurement breach.
+| Group | Charges | Value | Reading |
+|---|---|---|---|
+| Stillwater units — Cowboy Golf, Cowboy Dining, Extension e-store, Atherton Hotel, Nursing | 27 | $17,985 | The clearest breaches: these are University auxiliaries CVI exists for |
+| OSU Alumni Association | 79 | $48,633 | A separately incorporated affiliate; whether CVI applies depends on whether it is on the system |
+| OSU-Oklahoma City, OSU-Tulsa, OSU Medical Center | 166 | $23,500 | Separate institutions in the OSU system, mostly bookstores and dining; probably legitimate card use |
+
+One Stillwater charge stands out on its own: **$5,000.00 exactly to OSU Nursing**, the same
+negotiated-to-the-ceiling amount Control 14 looks for.
+
+**Conclusion:** the core breach population is small — 27 charges, about $18,000. The Alumni
+Association is a policy question rather than an exception, and the largest single block.
+
+**Follow-up:** ask Purchasing which of these vendors are on CVI. For the Alumni Association,
+identify what was bought — event tables and memberships also touch the memberships prohibition.
 
 ## Control 12 | Cash, cash advances and ATM — nil, control effective
 
@@ -294,6 +312,29 @@ whether the same vendor was charged again shortly afterwards.
 
 ---
 
+## Tests considered and rejected
+
+The seven student-defined controls were chosen from a longer list. Every candidate was sized
+against the 2014 data before deciding, and the queries are kept in `sql/considered/` so each
+number below is reproducible.
+
+| Candidate | Policy basis | 2014 result | Why it was not used |
+|---|---|---|---|
+| Gifts, flowers, candy | Gifts; items without business purpose | 570 txns, $164,872 | Mostly nursery stock and event supplies — the merchant type cannot tell a bouquet from a pallet of bedding plants. Replaced by Control 9 |
+| Insurance | Requisition through Risk Management | 16 txns, $8,752 | Valid but immaterial; mostly travel and event-ticket cover bought at booking. Replaced by Control 11 |
+| Personal / consumer merchants (clothing, shoes, jewellery, cosmetics, streaming) | Personal purchases of any type | 820 txns, $166,106 | Too noisy: athletics, theatre and uniform buying share these merchant types, and there is no department field to separate them |
+| Apple products outside the Bookstore | Apple products rule | 17 txns, $7,028 | Small, and the rule is Stillwater-only — the data cannot show which campus a cardholder works on |
+| Memberships and dues | Personal and individual memberships | 996 txns, $505,443 | Institutional memberships are allowed; nothing in the data separates them from personal ones |
+| Mail and postage | Use University Mailing | 21 txns, $5,297 | Small; left to the Part IV vendor search |
+| Late fees | Late fees | nil | The phrase does not occur in any vendor or description |
+| Charitable-organisation merchant type | Donations and sponsorships | 1,053 txns, $489,316 | Professional bodies, not charities. Narrowed into Control 9 |
+
+Several Part I rules cannot be tested from this file at all, because the evidence is not in it:
+the three-person sign-off (no approver or accountant field), delivery to a University address,
+sales tax, receipt retention, backorders and conflicts of interest.
+
+---
+
 ## What Part II establishes
 
 The transaction-level controls work. The $5,000 limit is enforced at the point of sale (33
@@ -303,11 +344,11 @@ higher limits) and the MCC block on cash is completely effective (nil exceptions
 The exposure is in the controls no point-of-sale check can enforce — those that depend on a person
 choosing the right purchasing route. Recurring supplier spend that should have been competed and put
 on a PO (**$6.1m**, Control 13), amounts trimmed to fit under the ceiling (**$886k**, Control 14),
-and prohibited categories bought openly (alcohol, gifts, fuel) are all invisible to a card system
-that only sees one transaction at a time. That is where the audit hours belong.
+and prohibited categories bought openly (alcohol, fuel, internal OSU units) are all invisible to a
+card system that only sees one transaction at a time. That is where the audit hours belong.
 
 Two method points carry beyond this case. Keyword tests need word boundaries — `%ATM%` matched
 "treatment". And merchant category codes describe the merchant, not the purchase: the same code
 covers a tank of petrol and a $46,000 facilities fuel account, a bereavement bouquet and a pallet of
-nursery stock. Every MCC-based population here needed a second dimension — amount, frequency or
-vendor — before it meant anything.
+nursery stock, a charity and a fire-code publisher. Every MCC-based population here needed a second
+dimension — amount, frequency or vendor — before it meant anything.
