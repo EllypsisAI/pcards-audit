@@ -6,7 +6,7 @@ data themselves.
 
 Course: AI in Accounting and Business (B150316101), SDU, autumn 2026.
 
-**Live site:** _added on deploy_
+**Live site:** https://pcard-audit.streamlit.app/
 
 ## What is here
 
